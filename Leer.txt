@@ -3,3 +3,7 @@ npm install
 
 Ejecutar en local:
 set DEBUG=app:* & npm start
+
+Nombres:
+- Salcedo Patroni, Andres
+- Salazar Fernández, Andhersson
