@@ -19,7 +19,7 @@ router.get('/', async function(req, res, next) {
 router.get('/filtro', async function(req, res, next) {
   try{
     const texto= req.query.nombre.trim();
-    const restaurantes= await Restaruante.find();
+    const restaurantes= await Restaurante.find();
     const filtro=[];
     if(texto=='')
       res.json(producto);

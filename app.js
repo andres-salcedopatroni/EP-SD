@@ -6,7 +6,6 @@ const mongoose=require('mongoose');
 const bodyParser=require('body-parser')
 
 //Rutas
-var indexRouter = require('./routes/index');
 const router_restaurante = require('./routes/route_restaurante');
 const router_usuario = require('./routes/route_usuario');
 const router_reserva = require('./routes/route_reserva');
@@ -27,7 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/', indexRouter);
 app.use('/restaurante', router_restaurante);
 app.use('/usuario', router_usuario);
 app.use('/reserva', router_reserva);
