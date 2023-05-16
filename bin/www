@@ -1,0 +1,139 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+const debug = require('debug')('back-end:server');
+var http = require('http');
+const WebSocket = require("socket.io");
+const Reserva=require('../schemas/reserva');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+
+
+
+const wss = WebSocket(server,{cors:{origins:'http://localhost:4200/'}})
+//new WebSocket.Server({server: server});
+
+let sequenceNumberByClient = new Map();
+let lis = [];
+
+wss.on('connection', (ws) => {
+  console.log(ws.id);
+  console.log('New client connected!');
+  
+  ws.on('message',  async (message) => {
+    try{
+      const patrocinio=await Reserva.find({"codigoPatrocinado":message},{"codigoPatrocinador":1});
+      let rooms=[];
+      for(let patrocinador of patrocinio){
+        rooms.push(patrocinador.codigoPatrocinador);
+      };
+      console.log(patrocinio);
+      rooms=[... new Set(rooms)];
+      for(let r of rooms){
+        console.log("room ingreso",message,r);
+        ws.join(r);
+      }
+      ws.join(message);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+  );
+  ws.on('nuevo_producto', 
+  async (message) => {
+    try{
+      console.log('room envio',message.codigoVendedor);
+      ws.to(message.codigoVendedor).emit('nuevo_producto_patrocinado',message);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+  );
+  ws.broadcast.emit('sendMessage', {"hola":"mundo"})
+});
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

@@ -1,0 +1,5 @@
+Instalar paquetes:
+npm install
+
+Ejecutar en local:
+set DEBUG=app:* & npm start
