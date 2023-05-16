@@ -2,7 +2,11 @@ var express = require('express');
 var router = express.Router();
 const Restaurante=require('../schemas/restaurante');
 
-//Obtener restaurantes
+/**
+ * Obtener restaurantes
+ * @author Andhersson Salazar <andhersson.salazar@unmsm.edu.pe>
+ * @returns {Json} 
+ */
 router.get('/', async function(req, res, next) {
   try{
     const restaurante=await Restaurante.find();
@@ -15,7 +19,12 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-//Obtener filtro-Completo
+/**
+ * Filtrar restaurantes
+ * @author Andres Salcedo <andres.salcedo@unmsm.edu.pe>
+ * @param {Json}  req - Objeto json que contiene el codigo del usuario y la contraseña.
+ * @returns {Json}
+ */
 router.get('/filtro', async function(req, res, next) {
   try{
     const texto= req.query.nombre.trim();
@@ -37,7 +46,12 @@ router.get('/filtro', async function(req, res, next) {
   }
 });
 
-//Crear restaurante
+/**
+ * Crear restaurantes
+ * @author Andhersson Salazar <andhersson.salazar@unmsm.edu.pe>
+ * @param {Json}  req - Objeto json que contiene los datos del restaurante.
+ * @returns {Json}
+ */
 router.post('/crear', async function(req, res, next) {
   try{
     console.log(req.body)
@@ -49,7 +63,12 @@ router.post('/crear', async function(req, res, next) {
   }
 });
 
-//Actualizar restaurante
+/**
+ * Actualizar restaurante
+ * @author Andhersson Salazar <andhersson.salazar@unmsm.edu.pe>
+ * @param {Json}  req - Objeto json que contiene el codigo del usuario.
+ * @returns {Json}
+ */
 router.put('/actualizar', async function(req, res, next) {
   try{
     res.json(await Restaurante.updateOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}, req.body));
@@ -60,7 +79,12 @@ router.put('/actualizar', async function(req, res, next) {
   }
 });
 
-//Eliminar restaurante
+/**
+ * Eliminar restaurantes
+ * @author Andres Salcedo <andres.salcedo@unmsm.edu.pe>
+ * @param {Json}  req - Objeto json que contiene el codigo y nombre del restaurante a eliminar.
+ * @returns {Json}
+ */
 router.delete('/eliminar', async function(req, res, next) {
   try{
     res.json(await Restaurante.deleteOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}));
