@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const Restaruante=require('../schemas/restaurante');
+const Restaurante=require('../schemas/restaurante');
 
-//Obtener productos
+//Obtener restaurantes
 router.get('/', async function(req, res, next) {
   try{
-    const producto=await Producto.find();
-    console.log(producto);
-    res.json(producto);
+    const restaurante=await Restaurante.find();
+    console.log(restaurante);
+    res.json(restaurante);
   }
   catch(err){
     console.log(err);
@@ -37,11 +37,11 @@ router.get('/filtro', async function(req, res, next) {
   }
 });
 
-//Crear producto
+//Crear restaurante
 router.post('/crear', async function(req, res, next) {
   try{
     console.log(req.body)
-    res.json(await Producto.create(req.body));
+    res.json(await Restaurante.create(req.body));
   }
   catch(err){
     console.log(err);
@@ -49,10 +49,10 @@ router.post('/crear', async function(req, res, next) {
   }
 });
 
-//Actualizar producto
+//Actualizar restaurante
 router.put('/actualizar', async function(req, res, next) {
   try{
-    res.json(await Producto.updateOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}, req.body));
+    res.json(await Restaurante.updateOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}, req.body));
   }
   catch(err){
     console.log(err);
@@ -60,10 +60,10 @@ router.put('/actualizar', async function(req, res, next) {
   }
 });
 
-//Eliminar producto
+//Eliminar restaurante
 router.delete('/eliminar', async function(req, res, next) {
   try{
-    res.json(await Producto.deleteOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}));
+    res.json(await Restaurante.deleteOne({"codigoVendedor": req.query.codigoVendedor,"nombre":req.query.nombre}));
   }
   catch(err){
     console.log(err);

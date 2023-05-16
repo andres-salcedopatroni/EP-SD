@@ -12,7 +12,7 @@ const router_usuario = require('./routes/route_usuario');
 const router_reserva = require('./routes/route_reserva');
 
 //Conexion Mongo
-const conexion_mongoose='mongodb+srv://usuario:12345@cluster0.iysppsa.mongodb.net/SD?retryWrites=true'
+const conexion_mongoose='mongodb+srv://usuario:12345@cluster0.iysppsa.mongodb.net/EP?retryWrites=true'
 mongoose.connect(conexion_mongoose);
 
 var app = express();
