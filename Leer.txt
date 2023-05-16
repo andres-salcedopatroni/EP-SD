@@ -1,7 +1,7 @@
 Instalar paquetes:
 npm install
 
-Ejecutar en local:
+Ejecutar en local - command prompt:
 set DEBUG=app:* & npm start
 
 Nombres:
